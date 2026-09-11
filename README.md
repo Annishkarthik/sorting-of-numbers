@@ -23,13 +23,78 @@ To write and execute an Assembly Language Program for sorting data in Ascending 
 ## Program (Ascending order)
 
 ```asm
+;------------------------------------------------
+; Program : Sorting in Ascending Order
+; Microcontroller : 8051
+; Software : Keil
+;------------------------------------------------
 
+ORG 0000H
+
+MOV R0, #30H       ; Starting address of data
+MOV R7, #04H       ; Number of comparisons
+
+OUTER:
+    MOV R1, #30H   ; Start of array
+    MOV R6, #04H   ; Number of comparisons
+
+INNER:
+    MOV A, @R1     ; Get first element
+    MOV R2, A      ; Store first element in R2
+
+    INC R1
+    MOV A, @R1     ; Get second element
+
+    CJNE A, R2, COMPARE
+
+COMPARE:
+    JC NO_SWAP     ; If A < R2, no exchange
+
+    MOV R3, A      ; Store second element
+    MOV A, R2
+    MOV @R1, A     ; Move first element to second position
+
+    DEC R1
+    MOV A, R3
+    MOV @R1, A     ; Move second element to first position
+
+    INC R1
+
+NO_SWAP:
+    DJNZ R6, INNER
+    DJNZ R7, OUTER
+
+HERE:
+    SJMP HERE
+
+END
 
 
 
 ```
 ## OUTPUT(Ascending order)
+Input Data
 
+Store the data in internal RAM before execution:
+
+Address	Data
+30H	25H
+31H	12H
+32H	45H
+33H	08H
+34H	30H
+Output — Ascending Order
+
+After execution:
+
+Address	Data
+30H	08H
+31H	12H
+32H	25H
+33H	30H
+34H	45H
+
+Output: 08H, 12H, 25H, 30H, 45H
 
 
 ---
@@ -49,13 +114,75 @@ To write and execute an Assembly Language Program for sorting data in Ascending 
 ## Program (Descending order)
 
 ```asm
+;------------------------------------------------
+; Program : Sorting in Descending Order
+; Microcontroller : 8051
+; Software : Keil
+;------------------------------------------------
 
+ORG 0000H
+
+MOV R7, #04H       ; Number of passes
+
+OUTER:
+    MOV R1, #30H   ; Starting address
+    MOV R6, #04H   ; Number of comparisons
+
+INNER:
+    MOV A, @R1     ; Get first element
+    MOV R2, A      ; Store first element
+
+    INC R1
+    MOV A, @R1     ; Get second element
+
+    CJNE A, R2, COMPARE
+
+COMPARE:
+    JNC NO_SWAP    ; If A > R2, no exchange
+
+    MOV R3, A      ; Store second element
+    MOV A, R2
+    MOV @R1, A     ; Move first element to second position
+
+    DEC R1
+    MOV A, R3
+    MOV @R1, A     ; Move second element to first position
+
+    INC R1
+
+NO_SWAP:
+    DJNZ R6, INNER
+    DJNZ R7, OUTER
+
+HERE:
+    SJMP HERE
+
+END
 
 
 
 ```
 ## OUTPUT(Descending order)
 
+Input Data
+Address	Data
+30H	25H
+31H	12H
+32H	45H
+33H	08H
+34H	30H
+Output — Descending Order
+
+After execution:
+
+Address	Data
+30H	45H
+31H	30H
+32H	25H
+33H	12H
+34H	08H
+
+Output: 45H, 30H, 25H, 12H, 08H
 
 
 ---
